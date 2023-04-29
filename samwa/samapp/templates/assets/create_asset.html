@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="{% url 'create_asset' %}" method="post">
+  {% csrf_token %}
+  <fieldset>
+    <legend>New Asset:</legend>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" value=""><br>
+    <label for="model">Model:</label><br>
+    <select name="model" id="model">
+      {% for model in models %}
+        <option value="{{ model.id }}">{{ model.name }}</option>
+      {% endfor %}
+    </select>
+    <label for="warranty">Warranty:</label><br>
+    <input type="date" id="warranty" name="warranty" value=""><br>
+    <label for="business_unit">Business unit:</label><br>
+    <select name="business_unit" id="business_unit">
+      {% for business_unit in business_units %}
+        <option value="{{ business_unit.id }}">{{ business_unit.short_name }}</option>
+      {% endfor %}
+    </select>
+    <label for="price">Price:</label><br>
+    <input type="text" id="price" name="price" value=""><br>
+    <label for="order_number">Order number:</label><br>
+    <input type="text" id="order_number" name="order_number" value=""><br>
+    <label for="status">Status:</label><br>
+    <select name="status" id="status">
+      {% for choice in status_choices %}
+        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Submit">
+  </fieldset>
+</form>
+{% endblock %}

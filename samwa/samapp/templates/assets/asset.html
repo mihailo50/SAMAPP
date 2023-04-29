@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">{{ asset.name }}</h1>
+            <p class="card-text">Asset Type: {{ asset.model }}</p>
+            <p class="card-text">Asset Value: {{ asset.management_group }}</p>
+            <p class="card-text">Price: {{ asset.price }}</p>
+            <p class="card-text">Order Number: {{ asset.order_number }}</p>
+            <p class="card-text">Warranty: {{ asset.warranty }}</p>
+            <p class="card-text">Status: {{ asset.status }}</p>
+        
+            <a href="{% url 'remove_asset' asset.name %}" class="btn btn-primary">Remove Asset</a>
+        </div>
+    </div>
+{% endblock %}

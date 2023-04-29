@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Update Asset</h1>
+            <form action="{% url 'update_asset' asset.id %}" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" name="name" value="{{ asset.name }}">
+            </div>
+
+            <div class="form-group">
+                <label for="model">Model:</label>
+                <select class="form-control" id="model" name="model" required>
+                {% for model in models %}
+                    <option value="{{ model.id }}" {% if model.id == asset.model.id %} selected{% endif %}>{{ model.name }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category" required>
+                    {% for category in categories %}
+                        {% if category.id == asset.category.id %}
+                            <option value="{{ category.id }}" selected>{{ category.name }}</option>
+                        {% else %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" step="0.01" value="{{ asset.price }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="order_number">Order Number:</label>
+                <input type="text" class="form-control" id="order_number" name="order_number" value="{{ asset.order_number }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="warranty">Warranty:</label>
+                <input type="date" class="form-control" id="warranty" name="warranty" value="{{ asset.warranty|date:'Y-m-d' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="management_group">Management Group:</label>
+                <select class="form-control" id="management_group" name="management_group" required>
+                  {% for management_group in management_groups %}
+                  <option value="{{ management_group.id }}" {% if management_group.id == asset.management_group.id %} selected{% endif %}>{{ management_group.name }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select class="form-control" id="status" name="status" required>
+                    {% for choice in asset.STATUS_CHOICES %}
+                        <option value="{{ choice.0 }}" {% if choice.0 == asset.status %}selected{% endif %}>{{ choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

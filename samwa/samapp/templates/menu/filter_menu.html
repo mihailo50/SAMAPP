@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block menu %}
+    <nav class="second-navbar">
+        <form action="{% url  'filter_by_model' %}" method="post">
+        {% csrf_token %}
+        <div class="filter-menu">
+            <Label for="filter_by_model">Filter by model</Label>
+            <select name="selected_model" id="selected_model">
+                <option value="" selected>Select model</option>
+                {% for model in models %}
+                <option value="{{ model.id }}">{{ model }}</option>
+                {% endfor %}
+            </select>
+            <div class="filter-menu">
+                <Label for="filter_by_bu">Filter by model</Label>
+                <select name="selected_bu" id="selected_bu">
+                    <option value="" selected>Select BU</option>
+                    {% for business_unit in business_units %}
+                    <option value="{{ business_unit.id }}">{{ business_unit }}</option>
+                    {% endfor %}
+                </select>
+            <div class="filter-menu">
+                <label for="filter_by_pr">Filter By Price Range</label>
+            </div>
+            <li><a href="">by warranty end date</a></li>
+        </div>
+        <button type="submit">Filter</button>
+        </form>
+    </nav>
+{% endblock  %}
