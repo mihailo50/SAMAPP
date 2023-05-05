@@ -6,36 +6,37 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href={% static 'style.css' %}>
-	{% block title %}BASE{% endblock %}
+	{% block title %}
+		BASE
+	{% endblock %}
 </head>
 
-<nav class="navbar">
-	<div class="menu">
-		<li>
-			<a href="{% url 'homepage' %}">Home</a>
-		</li>
-		<li class="filters">
-			<a id="filter-btn" href="{% url 'filter_menu' %}">Filters</a>
-		</li>
-		<li>
-			<a id="assets-btn" href="{% url 'asset_menu' %}">Assets</a>
-		</li>
-		<label for="search_field">
-			<input type="text">
-			<button>Search</button>
-		</label>
-	</div>
-</nav>
-
 <body>
-	{% block menu %}
-	{% endblock  %}
-	<main class="container">
-		{% block content %}
-		{% endblock %}
-	</main>
+	<header>
+		<nav class="navbar">
+			<div class="menu">
+				<li>
+					<a href="{% url 'homepage' %}">Home</a>
+				</li>
+				<li class="filters">
+					<a id="filter-btn" href="{% url 'filter_menu' %}">Filters</a>
+				</li>
+				<li>
+					<a id="assets-btn" href="{% url 'asset_menu' %}">Assets</a>
+				</li>
+				<form action="{% url 'search_asset' %}" method="get">
+					<input type="text" name="q" placeholder="Search...">
+					<button>Search</button>
+				</form>
+			</div>
+		</nav>
+	</header>
 
-	
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<main class="container">
+		{% block homepage %}
+		{% endblock %}
+		{% block content %}
+			{% endblock  %}
+	</main>
 </body>
 </html>

@@ -27,29 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': 'logs.log',
-        },
-        'mail_admins': {
-            'class': 'django.utils.log.AdminEmailHandler',
-            'level': 'ERROR',
-            'include_html': True,  # Set to False if you want plain text emails
-        },
-    },
-    'root': {
-        'handlers': ['console', 'file', 'mail_admins'],
-        'level': 'INFO',
-    },
-}
-
 ADMINS = [('Admin Name', 'admin@example.com')]
 
 # Email configuration

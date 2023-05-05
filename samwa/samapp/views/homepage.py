@@ -5,10 +5,10 @@ def homepage(request):
     models = asset_model.AssetModel.objects.all().distinct()
     business_units = business_unit.BusinessUnit.objects.all()
     assets = asset.Asset.objects.all()
-    print("HOMEPAGE:    ",models, business_units)
+    
     context = {
             "assets": assets,
             "models": models,
             "business_units": business_units
         }
-    return render(request, "base.html", context)
+    return render(request, "homepage.html", context)

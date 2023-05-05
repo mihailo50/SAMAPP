@@ -4,24 +4,6 @@ from samapp.models.asset import Asset
 from samapp.models.business_unit import BusinessUnit
 from django.contrib import messages
 
-
-def get_asset(asset_id):
-    """
-    Retrieve an asset object from the database based on the given asset_id.
-    """
-    try:
-        asset = asset.Asset.objects.get(id=asset_id)
-        return asset
-    except asset.Asset.DoesNotExist:
-        return None
-
-def update_database(asset):
-    """
-    Save the updated asset object to the database.
-    """
-    asset.save()
-
-
 # list all
 def all_assets(request):
     business_units = BusinessUnit.objects.all()
@@ -35,6 +17,7 @@ def all_assets(request):
         "categories": categories,
         'success_messages': success_messages,
     }
+    print("ALL ASSETS X")
     return render(request, "assets/all_assets.html", context)
 
 
@@ -46,6 +29,22 @@ def asset_details(request, id):
         "status_choices": status_choices,
     }
     return render(request, "assets/asset.html", context)
+
+def search_asset(request):
+    
+    query = request.GET.get('q')
+
+    if query:
+        assets = Asset.objects.filter(name__icontains=query)
+    else:
+        assets = Asset.objects.all()
+
+    context = {
+        "assets": assets,
+        "query": query,
+    }
+
+    return render(request, "assets/all_assets.html", context)
 
 
 # manage assets
@@ -66,6 +65,7 @@ def asset_menu(request):
     }
     return render(request, "menu/asset_menu.html", context)
 
+"""
 def filter_by_model(request):
     if request.method == 'POST':
         selected_model_id = request.POST.get('selected_model')
@@ -116,12 +116,52 @@ def filter_by_bu(request):
             "models": bu,
         }
         return render(request, 'assets/filtered_assets.html', context)
+"""
+def filter_assets(request):
+    if request.method == "POST":
+        min_price = request.POST.get('min_price')
+        max_price = request.POST.get('max_price')
+        selected_bu = request.POST.get('selected_bu')
+        selected_model_id = request.POST.get('selected_model')
+        
+        assets = Asset.objects.all()
+        
+        if min_price and max_price:
+            assets = assets.filter(price__gte=min_price, price__lte=max_price)
+        
+        if selected_bu:
+            assets = assets.filter(model__business_unit__id=selected_bu)
+        
+        if selected_model_id:
+            assets = assets.filter(model__id=selected_model_id)
+        
+        context = {
+            'assets': assets,
+            'min_price': min_price,
+            'max_price': max_price,
+            'business_units': BusinessUnit.objects.all(),
+            'selected_bu': selected_bu,
+            'selected_model': selected_model_id,
+        }
+        
+        return render(request, 'assets/all_assets.html', context)
+    
+    else:
+        context = {
+            'assets': Asset.objects.all(),
+            'business_units': BusinessUnit.objects.all(),
+        }
+        
+        return render(request, 'assets/all_assets.html', context)
+
+
 
 
 def create_asset(request):
     asset_models = asset_model.AssetModel.objects.all()
     business_units = BusinessUnit.objects.all()
     status_choices = Asset.STATUS_CHOICES
+    rs = management_group.ManagementGroup.objects.get(name="RS")
     print(business_units)
     context = {
         "models": asset_models,
@@ -139,7 +179,9 @@ def create_asset(request):
         new_asset.price = request.POST.get('price')
         new_asset.order_number = request.POST.get('order_number')
         new_asset.status = request.POST.get('status')
-        print("-------",new_asset)
+        
+        name = f"RET{rs}{request.POST.get('status')}"
+        print("Name test:   ",name)
         
         new_asset.save()
         

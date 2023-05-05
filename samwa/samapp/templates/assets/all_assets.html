@@ -1,29 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'homepage.html' %}
 
-{% block title %}All Assets{% endblock %}
-
+{% block title %}
+    All Assets
+{% endblock %}
 
 {% block content %}
     {% if success_messages %}
-    <div class="alert alert-success">
-        {% if success_messages %}
         <div class="alert alert-success" id="success-message">
-          <ul class="mb-0">
-            {% for message in success_messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
+            <ul class="mb-0">
+                {% for message in success_messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
         </div>
-      
+
         <script>
-          $(document).ready(function() {
-            setTimeout(function() {
-              $("#success-message").fadeOut("slow");
-            }, 3000);  // Set the duration in milliseconds (e.g., 3000 for 3 seconds)
-          });
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $("#success-message").fadeOut("slow");
+                }, 3000);  // Set the duration in milliseconds (e.g., 3000 for 3 seconds)
+            });
         </script>
-      {% endif %}
-    </div>
     {% endif %}
     <table id="assets">
         <thead>
@@ -39,15 +36,15 @@
         </thead>
         <tbody>
             {% for asset in assets %}
-            <tr>
-                <td>{{ asset.name }}</td>
-                <td>{{ asset.model }}</td>
-                <td>{{ asset.business_unit }}</td>
-                <td>{{ asset.get_status_display }}</td>
-                <td>{{ asset.price }}</td>
-                <td><a href="{% url 'update_asset' asset.id %}">Update</a></td>
-                <td><a href="{% url 'remove_asset' asset.id %}">Remove</a></td>
-            </tr>
+                <tr>
+                    <td>{{ asset.name }}</td>
+                    <td>{{ asset.model }}</td>
+                    <td>{{ asset.business_unit }}</td>
+                    <td>{{ asset.get_status_display }}</td>
+                    <td>{{ asset.price }}</td>
+                    <td><a href="{% url 'update_asset' asset.id %}">Update</a></td>
+                    <td><a href="{% url 'remove_asset' asset.id %}">Remove</a></td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
